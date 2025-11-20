@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <title>BuffStreams - Watch Free NFL, NBA, MLB, and UFC Streams</title>
+  <meta name="description"
+    content="Watch live NFL, NBA, MLB, NHL, soccer, UFC, boxing for free in high definition on BuffStreams. Access schedules, and streaming guides—no signup needed." />
+  <meta name="keywords"
+    content="BuffStreams, free sports streaming, NFL streaming, NBA streaming, MLB streaming, NHL streaming, soccer streaming, UFC, MMA, boxing, live sports" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="robots" content="index, follow" />
+  <meta name="msvalidate.01" content="AB71A7211002380AAA1753093DC6B42E" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@200;300;400;500;600;700;800&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" />
+  <style>
+    :root {
+      --primary: #2563eb;
+      --primary-dark: #1d4ed8;
+      --secondary: #dc2626;
+      --dark: #0f172a;
+      --dark-light: #1e293b;
+      --light: #f8fafc;
+      --gray: #64748b;
+      --success: #10b981;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: "Inter", sans-serif;
+      background: linear-gradient(135deg, var(--dark) 0%, #0a0f1f 100%);
+      color: var(--light);
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 20px;
+    }
+
+    /* Header Styles */
+    .header {
+      text-align: center;
+      padding: 40px 0 30px;
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.9) 0%, rgba(30, 41, 59, 0.7) 100%);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .header::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 15px;
+    }
+
+    .logo-icon {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, var(--primary), var(--secondary));
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: white;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      font-weight: 800;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      margin-bottom: 10px;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      color: #cbd5e1;
+      max-width: 700px;
+      margin: 0 auto;
+    }
+
+    /* Main Content */
+    .main {
+      padding: 40px 0;
+    }
+
+    .pro-tip {
+      background: var(--dark-light);
+      border-left: 4px solid var(--primary);
+      padding: 15px 20px;
+      border-radius: 8px;
+      margin-bottom: 30px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .pro-tip i {
+      color: var(--primary);
+      font-size: 1.2rem;
+    }
+
+    /* Sports Grid */
+    .sports-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 20px;
+      margin-bottom: 40px;
+    }
+
+    .sport-card {
+      background: var(--dark-light);
+      border-radius: 12px;
+      padding: 25px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .sport-card::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 4px;
+      background: linear-gradient(90deg, var(--primary), var(--secondary));
+      transform: scaleX(0);
+      transform-origin: left;
+      transition: transform 0.3s ease;
+    }
+
+    .sport-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+
+    .sport-card:hover::before {
+      transform: scaleX(1);
+    }
+
+    .sport-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 15px;
+      font-size: 24px;
+      background: rgba(37, 99, 235, 0.1);
+      color: var(--primary);
+    }
+
+    .sport-card h3 {
+      font-size: 1.3rem;
+      margin-bottom: 10px;
+      color: var(--light);
+    }
+
+    .sport-card p {
+      color: #94a3b8;
+      margin-bottom: 20px;
+      flex-grow: 1;
+    }
+
+    .watch-btn {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--primary);
+      font-weight: 600;
+      margin-top: auto;
+    }
+
+    /* Content Sections */
+    .content-section {
+      background: var(--dark-light);
+      border-radius: 12px;
+      padding: 30px;
+      margin-bottom: 30px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .section-header i {
+      color: var(--primary);
+      font-size: 1.5rem;
+    }
+
+    .section-header h2 {
+      font-size: 1.5rem;
+      color: var(--light);
+    }
+
+    .content-section p {
+      margin-bottom: 15px;
+      color: #cbd5e1;
+    }
+
+    .content-section ul,
+    .content-section ol {
+      margin-left: 20px;
+      margin-bottom: 20px;
+    }
+
+    .content-section li {
+      margin-bottom: 8px;
+      color: #cbd5e1;
+    }
+
+    .content-section strong {
+      color: var(--light);
+    }
+
+    /* Events Table */
+    .events-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+      background: rgba(15, 23, 42, 0.5);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .events-table th {
+      background: var(--primary);
+      color: white;
+      padding: 12px 15px;
+      text-align: left;
+      font-weight: 600;
+    }
+
+    .events-table td {
+      padding: 12px 15px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      color: #cbd5e1;
+    }
+
+    .events-table tr:last-child td {
+      border-bottom: none;
+    }
+
+    .events-table tr:hover {
+      background: rgba(255, 255, 255, 0.03);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      padding: 30px 0;
+      margin-top: 40px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      font-size: 0.9rem;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .header h1 {
+        font-size: 2rem;
+      }
+
+      .sports-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .content-section {
+        padding: 20px;
+      }
+    }
+  </style>
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const urlMap = {
+        home: "https://viprow.cyou/nfl/",
+        cfb: "https://viprow.cyou/cfb/",
+        nhl: "https://viprow.cyou/nhl/",
+        nba: "https://viprow.cyou/nba/",
+        mma_boxing: "https://viprow.cyou/",
+      };
+
+      document.querySelectorAll(".sport-card").forEach((item) => {
+        item.addEventListener("click", () => {
+          const id = item.id;
+          if (urlMap[id]) {
+            window.open(urlMap[id], "_blank");
+          }
+        });
+      });
+    });
+  </script>
+</head>
+
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">
+        <div class="logo-icon">
+          <i class="bi bi-play-btn-fill"></i>
+        </div>
+        <h1>BuffStreams – Watch Live Sports NFL, NBA, NHL, MMA & More</h1>
+      </div>
+      <p>
+        <strong>BuffStreams</strong> offers high-quality, ad-free streaming for
+        major sports events like the NFL, NBA, CFB, BOXING, and UFC. No signup
+        required—just click and stream.
+      </p>
+    </div>
+
+    <div class="main">
+      <div class="pro-tip">
+        <i class="bi bi-lightbulb"></i>
+        <span><strong>Pro Tip:</strong> Press <strong>Ctrl + D</strong> to bookmark this page for instant live sports
+          access!</span>
+      </div>
+
+      <div class="sports-grid">
+        <div class="sport-card" id="home">
+          <div class="sport-icon">
+            <i class="bi bi-joystick"></i>
+          </div>
+          <h3>Watch Live NFL</h3>
+          <p>Stream all NFL games including regular season, playoffs, and the Super Bowl in HD quality.</p>
+          <div class="watch-btn">
+            <span>Watch Now</span>
+            <i class="bi bi-arrow-right"></i>
+          </div>
+        </div>
+
+        <div class="sport-card" id="cfb">
+          <div class="sport-icon">
+            <i class="bi bi-baseball"></i>
+          </div>
+          <h3>Watch Live CFB</h3>
+          <p>Never miss a College Football game with our reliable streaming service.</p>
+          <div class="watch-btn">
+            <span>Watch Now</span>
+            <i class="bi bi-arrow-right"></i>
+          </div>
+        </div>
+
+        <div class="sport-card" id="nba">
+          <div class="sport-icon">
+            <i class="bi bi-basketball"></i>
+          </div>
+          <h3>Watch NBA & NCAA</h3>
+          <p>From March Madness to NBA Finals, catch all the basketball action.</p>
+          <div class="watch-btn">
+            <span>Watch Now</span>
+            <i class="bi bi-arrow-right"></i>
+          </div>
+        </div>
+
+        <div class="sport-card" id="mma_boxing">
+          <div class="sport-icon">
+            <i class="bi bi-trophy"></i>
+          </div>
+          <h3>Watch UFC, MMA & Boxing</h3>
+          <p>Fight Nights, PPV cards, and world title bouts - all available for free.</p>
+          <div class="watch-btn">
+            <span>Watch Now</span>
+            <i class="bi bi-arrow-right"></i>
+          </div>
+        </div>
+
+        <div class="sport-card" id="nhl">
+          <div class="sport-icon">
+            <i class="bi bi-snow"></i>
+          </div>
+          <h3>Watch NHL</h3>
+          <p>Stanley Cup, playoffs, and regular games - stream all hockey action.</p>
+          <div class="watch-btn">
+            <span>Watch Now</span>
+            <i class="bi bi-arrow-right"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="content-section">
+        <div class="section-header">
+          <i class="bi bi-play-circle"></i>
+          <h2>Quick Start Guide: How to Stream Live Sports on BuffStreams (Full 2025 Tutorial)</h2>
+        </div>
+
+        <p>
+          If you’re looking for the fastest, easiest, and most reliable way to watch live sports online,
+          <strong>BuffStreams</strong> remains one of the top choices in 2025. It’s popular among sports fans
+          because the entire streaming experience—from landing on the homepage to watching a live game—takes
+          only a few seconds. Whether you love the NFL, NBA, NHL, soccer, boxing, UFC, MLB, or college sports,
+          BuffStreams provides a clean, modern, and ad-light environment where you can stream sports without
+          subscriptions, unnecessary steps, or confusing menus.
+        </p>
+
+        <p>
+          Unlike traditional platforms that require apps, credit cards, email sign-ups, or region-locked
+          accounts, BuffStreams is built for speed and convenience. It works right from your browser, no matter
+          which device you have: smartphone, tablet, laptop, PC, smart TV, Chromecast, Firestick, or even
+          gaming consoles with a web browser. This universal compatibility is one of the main reasons millions
+          of users turn to BuffStreams whenever they want quick access to high-definition sports without paying
+          expensive subscription fees.
+        </p>
+
+        <p>
+          This expanded step-by-step guide will walk you through everything you need to know to start streaming
+          instantly, avoid common issues, get the best video quality, and make the most out of BuffStreams’s
+          interface and features. Whether you're new to the platform or a returning viewer, this detailed
+          breakdown ensures you have the smoothest streaming experience possible.
+        </p>
+
+        <h3 style="margin-top: 20px;">🚀 Why BuffStreams Is the Go-To Platform for Quick Live Sports Access</h3>
+
+        <p>
+          Many streaming websites are slow, overloaded with ads, difficult to navigate, or unreliable during
+          big events. <strong>BuffStreams</strong> solves these issues by offering:
+        </p>
+
+        <ul>
+          <li><strong>Clean Interface:</strong> Everything is organized into clear sports categories.</li>
+          <li><strong>No Pop-Ups on Homepage:</strong> You won't be overwhelmed with intrusive ads.</li>
+          <li><strong>Fast Loading:</strong> Pages load almost instantly, even on slower networks.</li>
+          <li><strong>Multiple Streaming Sources:</strong> If one link buffers, you can switch to another.</li>
+          <li><strong>HD to Ultra HD Quality:</strong> Many streams support 720p, 1080p, and 4K options.</li>
+          <li><strong>No Signups or Accounts Required:</strong> You can start watching immediately.</li>
+        </ul>
+
+        <p>
+          These features make BuffStreams ideal for fans who simply want to open their browser and watch sports
+          without dealing with complicated technical steps. It is also especially useful for international
+          viewers who face blackout restrictions or cannot watch certain leagues in their countries.
+        </p>
+
+        <h3 style="margin-top: 20px;">📍 How BuffStreams Works Behind the Scenes</h3>
+
+        <p>
+          BuffStreams doesn’t host the live sports itself—it aggregates reliable streaming sources from around
+          the web and presents them in one convenient location. This approach ensures:
+        </p>
+
+        <ul>
+          <li>More variety in stream quality</li>
+          <li>Higher reliability during peak traffic events</li>
+          <li>Backup options in case one link goes down</li>
+          <li>Coverage for smaller or international sports that official platforms ignore</li>
+        </ul>
+
+        <p>
+          Because of this system, BuffStreams is extremely flexible and always up-to-date with live schedules,
+          making it a powerful tool for sports fans who want instant access to events happening anywhere in the
+          world.
+        </p>
+
+        <h3 style="margin-top: 20px;">🔥 Full 1500-Word Quick Start Tutorial: How to Stream Live Sports on BuffStreams
+        </h3>
+
+        <p>
+          Below is the complete, expanded step-by-step process. Follow these steps once, and you’ll be able to
+          stream everything—from NFL Sunday to NBA playoffs, from UFC Fight Nights to international soccer
+          derbies—within seconds.
+        </p>
+
+        <h3 style="margin-top: 20px;">1. Open the Official BuffStreams Website</h3>
+
+        <p>
+          Begin by launching your preferred web browser. BuffStreams works flawlessly on Chrome, Firefox, Safari,
+          Brave, Edge, and most mobile browsers. Simply type the website name into the address bar and hit enter.
+        </p>
+
+        <p>
+          The homepage loads almost instantly, presenting a clean and intuitive layout. Unlike cluttered
+          streaming websites, BuffStreams uses a grid-based system that separates sports into categories. This
+          ensures that even first-time users can navigate the platform within seconds.
+        </p>
+
+        <p>
+          For mobile users, the site automatically adjusts to a responsive display, meaning text, buttons, and
+          streams scale perfectly to your screen without requiring pinch-to-zoom or horizontal scrolling.
+        </p>
+
+        <h3 style="margin-top: 20px;">2. Select Your Preferred Sport</h3>
+
+        <p>
+          Once you're on the homepage, you'll see a collection of sports categories. Some of the most popular
+          ones include:
+        </p>
+
+        <ul>
+          <li>NFL (Football)</li>
+          <li>NBA (Basketball)</li>
+          <li>MLB (Baseball)</li>
+          <li>NHL (Hockey)</li>
+          <li>NCAA Football & Basketball</li>
+          <li>Soccer (Premier League, La Liga, Champions League, etc.)</li>
+          <li>UFC / MMA</li>
+          <li>Boxing</li>
+          <li>Motorsports</li>
+          <li>Tennis, Golf, Rugby, and more</li>
+        </ul>
+
+        <p>
+          Each category contains a full list of live games, upcoming matches, and sometimes playoff brackets.
+          BuffStreams updates these sections continuously, often minutes after official schedules are announced.
+        </p>
+
+        <p>
+          Clicking a category immediately brings you to a neatly organized list of games for that sport. You
+          won’t have to deal with confusing dropdown menus, multi-page navigation, or long loading times.
+        </p>
+
+        <h3 style="margin-top: 20px;">3. Pick the Game or Event You Want to Watch</h3>
+
+        <p>
+          After selecting a sport, scroll through the list of currently live and scheduled events. For example:
+        </p>
+
+        <ul>
+          <li><strong>NFL:</strong> All Sunday afternoon games, TNF, MNF, playoffs, and Super Bowl.</li>
+          <li><strong>NBA:</strong> Regular season, playoffs, and NBA Finals.</li>
+          <li><strong>UFC:</strong> Fight Nights, PPV main cards, and prelims.</li>
+          <li><strong>Soccer:</strong> European leagues, South American leagues, and international tournaments.</li>
+        </ul>
+
+        <p>
+          BuffStreams sometimes displays multiple listings for the same event, especially during big matchups.
+          This gives you flexibility in choosing streams with higher reliability or better quality.
+        </p>
+
+        <p>
+          Once you click your chosen game, you’ll be taken to a new page with available stream links, each
+          provided by a different source. Many events include 2–5 streaming options.
+        </p>
+
+        <h3 style="margin-top: 20px;">4. Choose Your Preferred Streaming Link and Adjust Quality</h3>
+
+        <p>
+          Each stream may offer different video resolutions, commentary audio options, and loading speeds.
+          BuffStreams typically supports:
+        </p>
+
+        <ul>
+          <li><strong>480p</strong> – Good for slower internet</li>
+          <li><strong>720p HD</strong> – Balanced quality and speed</li>
+          <li><strong>1080p Full HD</strong> – Sharp, smooth, recommended for fast Wi-Fi</li>
+          <li><strong>4K Ultra HD</strong> – Offered in selected events</li>
+          <li><strong>Auto Mode</strong> – Automatically adjusts based on your bandwidth</li>
+        </ul>
+
+        <p>
+          If one link buffers or lags, simply scroll back and choose another link—no need to refresh the entire
+          page. This instant switching is one of BuffStreams’s biggest strengths compared to older streaming
+          sites.
+        </p>
+
+        <h3 style="margin-top: 20px;">5. Start Watching Instantly—No Sign-Up or Verification Needed</h3>
+
+        <p>
+          Once you hit play, the stream loads within seconds. You don’t need to create an account, verify an
+          email address, or fill out any info. The “click-to-watch” experience is designed for:
+        </p>
+
+        <ul>
+          <li>Fans in a hurry</li>
+          <li>Users watching last-minute matches</li>
+          <li>People who want to avoid complicated apps</li>
+          <li>International viewers facing blackouts</li>
+        </ul>
+
+        <p>
+          Most streams also include a fullscreen mode, volume control, and picture-in-picture support for
+          multitasking on desktops and mobile devices.
+        </p>
+
+        <h3 style="margin-top: 20px;">💡 Additional Tips for the Best BuffStreams Streaming Experience</h3>
+
+        <ul>
+          <li><strong>Use a stable internet connection</strong> for 1080p and 4K streams.</li>
+          <li><strong>Enable an ad blocker</strong> to reduce interruptions.</li>
+          <li><strong>Bookmark the homepage</strong> (Ctrl + D) for quick access.</li>
+          <li><strong>Use Auto mode</strong> if your connection fluctuates.</li>
+          <li><strong>Try multiple links</strong> during big events like playoffs or PPVs.</li>
+          <li><strong>Use a VPN</strong> if content is blocked in your country.</li>
+        </ul>
+
+        <p>
+          Following these tips ensures that you get the smoothest and most enjoyable experience possible,
+          especially during high-traffic sporting events.
+        </p>
+
+        <h3 style="margin-top: 20px;">🏁 Final Thoughts: Streaming Made Simple with BuffStreams</h3>
+
+        <p>
+          With its lightning-fast navigation, simple interface, and wide coverage of every major sport,
+          <strong>BuffStreams</strong> has become one of the best platforms for fans who want a hassle-free way to watch
+          live games.
+          This 1500-word quick start guide shows that getting started on BuffStreams takes only a few clicks, and with
+          its multiple streaming sources, HD options, and no-signup approach, it delivers everything sports fans need
+          for convenient, flexible, and high-quality viewing.
+        </p>
+
+        <p>
+          Whether you're tuning in for a major NFL showdown, an intense NBA rivalry game, a UFC title fight, or a
+          Champions League derby, BuffStreams ensures you’re only moments away from the action. Just open the site,
+          pick your sport, choose a stream, and enjoy the game—anytime, anywhere, on any device.
+        </p>
+      </div>
+
+
+      <div class="content-section">
+        <div class="section-header">
+          <i class="bi bi-list-check"></i>
+          <h2>Sports Available on BuffStreams</h2>
+        </div>
+        <p>BuffStreams covers a huge range of leagues and tournaments with live action from around the world:</p>
+        <ul>
+          <li>🏈 <strong>NFL</strong> – Watch regular season, playoffs, and the Super Bowl.</li>
+          <li>🏀 <strong>NBA & NCAA Basketball</strong> – From March Madness to NBA Finals.</li>
+          <li>⚾ <strong>MLB</strong> – Full season, playoffs, and the World Series.</li>
+          <li>🏒 <strong>NHL</strong> – Stanley Cup, playoffs, and regular games.</li>
+          <li>⚽ <strong>Soccer</strong> – Premier League, La Liga, Serie A, Champions League, and international matches.
+          </li>
+          <li>🥊 <strong>UFC, MMA & Boxing</strong> – Fight Nights, PPV cards, and world title bouts.</li>
+        </ul>
+      </div>
+
+      <div class="content-section">
+        <div class="section-header">
+          <i class="bi bi-question-circle"></i>
+          <h2>BuffStreams FAQ</h2>
+        </div>
+        <h3>Is BuffStreams free?</h3>
+        <p>Yes. BuffStreams lets you stream sports without paying monthly fees or creating an account.</p>
+
+        <h3>Is it legal to use BuffStreams?</h3>
+        <p>Legality depends on your country. Some regions block or restrict unlicensed streams, so always check your
+          local laws.</p>
+
+        <h3>Do I need a VPN?</h3>
+        <p>Some sports broadcasts are region-locked. A VPN can help bypass restrictions and improve privacy while
+          streaming.</p>
+      </div>
+
+      <div class="content-section">
+        <div class="section-header">
+          <i class="bi bi-calendar-event"></i>
+          <h2>Latest Sports Events & Matches</h2>
+        </div>
+
+        <table class="events-table">
+          <thead>
+            <tr>
+              <th>Sport</th>
+              <th>Event</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>⚽ Soccer</td>
+              <td><strong>Real Madrid vs Barcelona</strong> — La Liga El Clásico</td>
+              <td>Oct 2025</td>
+            </tr>
+            <tr>
+              <td>🥋 UFC / MMA</td>
+              <td><strong>UFC 320: Ankalaev vs Pereira II</strong> — Main card (title rematch)</td>
+              <td>Oct 4, 2025</td>
+            </tr>
+            <tr>
+              <td>🥊 Boxing</td>
+              <td><strong>Tyson Fury vs Oleksandr Usyk</strong> — Heavyweight title bout</td>
+              <td>Nov 23, 2025</td>
+            </tr>
+            <tr>
+              <td>🏈 NFL</td>
+              <td><strong>Kansas City Chiefs vs San Francisco 49ers</strong> — Prime-time showdown</td>
+              <td>Regular season 2025</td>
+            </tr>
+            <tr>
+              <td>🏀 NBA</td>
+              <td><strong>Los Angeles Lakers vs Golden State Warriors</strong> — Early-season marquee</td>
+              <td>Early season 2025–26</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <p style="margin-top: 15px;"><strong>Note:</strong> Dates and cards above include confirmed and widely reported
+          events; some matchups
+          are tentative or pending official confirmation. Schedules are updated frequently — check official event
+          pages, ESPN, or the promotion's website for exact dates, start times, and venue information.</p>
+      </div>
+    </div>
+
+    <footer>&copy; 2025 BuffStreams. All rights reserved.</footer>
+  </div>
+</body>
+
+</html>
