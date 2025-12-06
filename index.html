@@ -312,19 +312,17 @@
   <script>
     document.addEventListener("DOMContentLoaded", () => {
       const urlMap = {
-        home: "https://viprow.cyou/nfl/",
-        cfb: "https://viprow.cyou/cfb/",
-        nhl: "https://viprow.cyou/nhl/",
-        nba: "https://viprow.cyou/nba/",
+        home: "https://viprow.cyou/?league=NFL",
+        mlb: "https://viprow.cyou/?league=MLB",
+        nhl: "https://viprow.cyou/?league=NHL",
+        nba: "https://viprow.cyou/?league=NBA",
         mma_boxing: "https://viprow.cyou/",
+        cfb: "https://viprow.cyou/"
       };
-
-      document.querySelectorAll(".sport-card").forEach((item) => {
+      document.querySelectorAll(".bntl").forEach((item) => {
         item.addEventListener("click", () => {
           const id = item.id;
-          if (urlMap[id]) {
-            window.open(urlMap[id], "_blank");
-          }
+          if (urlMap[id]) window.open(urlMap[id], "_blank");
         });
       });
     });
